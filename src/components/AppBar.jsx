@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { SafeAreaView, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { SafeAreaView, View, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 
-import Text from './Text';
+import Text from './UIcomps/Text';
 import { Link } from 'react-router-native';
 import { useApolloClient, useQuery } from '@apollo/react-hooks';
 import { GET_USER } from '../graphql/queries';
@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
   },
   tab: {
     padding: 10
+  },
+  barContent: {
+    flexDirection: 'row'
   }
 });
 
@@ -24,6 +27,8 @@ const AppBar = () => {
   const authStorage = useContext(AuthStorageContext);
 
   const isUserLoggedIn = useQuery(GET_USER);
+
+  console.log('is it', isUserLoggedIn);
 
   let loggedIn = false;
   if (!isUserLoggedIn.loading) {
@@ -48,25 +53,56 @@ const AppBar = () => {
           </Text>
         </Link>
         {!loggedIn ?
-          <Link to='/signin' component={TouchableWithoutFeedback}>
+          <View style={styles.barContent}>
+            <Link to='/signin' component={TouchableWithoutFeedback}>
+              <Text
+                color='menu'
+                fontSize='subheading'
+                style={styles.tab}
+              >
+                Sign in
+              </Text>
+            </Link>
+            <Link to='signup' component={TouchableWithoutFeedback}>
             <Text
-              color='menu'
-              fontSize='subheading'
-              style={styles.tab}
-            >
-              Sign in
-            </Text>
-          </Link>
+                color='menu'
+                fontSize='subheading'
+                style={styles.tab}
+              >
+                Sign up
+              </Text>
+            </Link>
+          </View>
         :
-          <TouchableWithoutFeedback onPress={signOut}>
-            <Text
-              color='menu'
-              fontSize='subheading'
-              style={styles.tab}
-            >
-              Sign out
-            </Text>
-          </TouchableWithoutFeedback>
+          <View style={styles.barContent}>
+            <Link to='/review' component={TouchableWithoutFeedback}>
+              <Text
+                color='menu'
+                fontSize='subheading'
+                style={styles.tab}
+              >
+                Create a review
+              </Text>
+            </Link>
+            <Link to='/reviews' component={TouchableWithoutFeedback}>
+              <Text
+                color='menu'
+                fontSize='subheading'
+                style={styles.tab}
+              >
+                My reviews
+              </Text>
+            </Link>
+            <TouchableWithoutFeedback onPress={signOut}>
+              <Text
+                color='menu'
+                fontSize='subheading'
+                style={styles.tab}
+              >
+                Sign out
+              </Text>
+            </TouchableWithoutFeedback>
+          </View>
         }
       </ScrollView>
     </SafeAreaView>

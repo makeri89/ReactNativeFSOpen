@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import Text from './Text';
+import Text from './UIcomps/Text';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,10 +21,10 @@ const Countables = ({ item }) => {
 
   return (
     <View style={styles.container}>
-      <Text textAlign='center'>{counts.stars}{'\n'}Stars</Text>
-      <Text textAlign='center'>{counts.forks}{'\n'}Forks</Text>
-      <Text textAlign='center'>{counts.reviews}{'\n'}Reviews</Text>
-      <Text textAlign='center'>{counts.rating}{'\n'}Rating</Text>
+      <Text textAlign='center' testID='stars'>{counts.stars}{'\n'}Stars</Text>
+      <Text textAlign='center' testID='forks'>{counts.forks}{'\n'}Forks</Text>
+      <Text textAlign='center' testID='reviews'>{counts.reviews}{'\n'}Reviews</Text>
+      <Text textAlign='center' testID='rating'>{counts.rating}{'\n'}Rating</Text>
     </View>
   );
 };

@@ -4,8 +4,8 @@ import { TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import Text from './Text';
-import FormikTextInput from './FormikTextInput';
+import Text from './UIcomps/Text';
+import FormikTextInput from './UIcomps/FormikTextInput';
 import useSignIn from '../hooks/useSignIn';
 
 const initialValues = {
@@ -15,7 +15,9 @@ const initialValues = {
 
 const styles = StyleSheet.create({
   form: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    margin: 30,
+    borderRadius: 10
   },
   actionbutton: {
     margin: 10,
@@ -23,15 +25,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: 'center',
     overflow: 'hidden'
+  },
+  header: {
+    textAlign: 'center',
+    paddingTop: 10
   }
 });
 
-const SignInForm = ({ onSubmit }) => {
+export const SignInForm = ({ onSubmit }) => {
   return (
     <View style={styles.form}>
-      <FormikTextInput name='username' placeholder='username'/>
-      <FormikTextInput name='password' placeholder='password' secureTextEntry/>
-      <TouchableWithoutFeedback onPress={onSubmit}>
+      <Text fontSize='header' fontWeight='bold' style={styles.header}>Sign in</Text>
+      <FormikTextInput name='username' placeholder='username' />
+      <FormikTextInput name='password' placeholder='password' secureTextEntry />
+      <TouchableWithoutFeedback onPress={onSubmit} testID='submitButton'>
         <Text color='language' style={styles.actionbutton}>Sign in</Text>
       </TouchableWithoutFeedback>
     </View>  
@@ -48,6 +55,18 @@ const validationSchema = yup.object().shape({
     .min(3, 'Password must be at least three characters long')
     .required('Password is required')
 });
+
+export const SignInContainer = ({ onSubmit, validationSchema }) => {
+  return (
+    <Formik 
+      initialValues={initialValues} 
+      onSubmit={onSubmit}
+      validationSchema={validationSchema}
+    >
+      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+    </Formik>
+  );
+};
 
 const SignIn = () => {
   const [singIn] = useSignIn();

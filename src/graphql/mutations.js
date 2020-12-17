@@ -1,5 +1,7 @@
 import { gql } from 'apollo-boost';
 
+import { REPOSITORY_INFO } from './fragments';
+
 export const SIGN_IN = gql`
   mutation authorize($username: String!, $password: String!) {
     authorize(
@@ -10,5 +12,48 @@ export const SIGN_IN = gql`
     ) {
       accessToken
     }
+  }
+`;
+
+export const CREATE_REVIEW = gql`
+  mutation createReview(
+    $repositoryName: String!,
+    $ownerName: String!,
+    $rating: Int!,
+    $text: String
+  ) {
+    createReview(
+      review: {
+        repositoryName: $repositoryName,
+        ownerName: $ownerName,
+        rating: $rating,
+        text: $text
+      }
+    ) {
+      repositoryId
+      repository {
+        ...repositoryInfo
+      }
+    }
+  }
+  ${REPOSITORY_INFO}
+`;
+
+export const SIGN_UP = gql`
+  mutation createUser($username: String!, $password: String!) {
+    createUser(
+      user: {
+        username: $username,
+        password: $password
+      }
+    ) {
+      username
+    }
+  }
+`;
+
+export const DELETE_REVIEW = gql`
+  mutation deleteReview($id: ID!) {
+    deleteReview(id: $id)
   }
 `;
